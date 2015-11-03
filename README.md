@@ -8,10 +8,12 @@ Download a Python 3.x interpreter from [here](https://www.python.org/downloads/)
 
 When Python (and the appropriate packages) are dowloaded. Simply type one of the following commands in your command prompt:
 
+```
 python estimate_GARCH.py
 python estimate_RNN.py 
 python VaR_GARCH.py
 python VaR_RNN.py
+```
 
 The first two scripts estimates the GARCH(1,1)-model and the Jordan Neural network with 5 hidden layers on the SP500 daily returns and saves the output in a JSON-file, named GARCH_est_<timestamp>.json, for the ARCH model and Jordan_est_<timestamp>.json for the Neural Network model.
 
