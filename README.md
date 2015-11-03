@@ -1,6 +1,6 @@
 This repository contains Python code to estimate a recurrent Neural Network which tries to model the volatility of the daily returns of the SP500 index.
 
-#To run the code
+##To run the code
 
 Download the repository content by clicking "Download ZIP" and unzipping to a folder on your machine.
 
@@ -17,10 +17,10 @@ The first two scripts estimates the GARCH(1,1)-model and the Jordan Neural netwo
 
 The two scripts: VaR_GARCH and VaR_RNN produces some VaR plots which are saved in your_folder/plots.
 
-#Data
+##Data
  
 The data come from Yahoo fianance https://finance.yahoo.com/q?s=^GSPC and is located in a CSV file in the data-folder.
 
-#Paper
+##Paper
 
 This code was made for a University paper. A draft version of the paper in PDF can also be found in the repository, named RNN_GARCH_paper.pdf.
