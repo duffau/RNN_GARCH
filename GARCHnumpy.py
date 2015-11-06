@@ -2,6 +2,10 @@ import numpy as np
 from scipy.stats import norm
 
 class GARCHnumpy:
+	'''
+	This class defines the GARCH model object which contains, functions
+	for estimation and VaR forecasting.
+	'''
 
 	def __init__(self,theta=None, mu=None):
 
@@ -18,12 +22,23 @@ class GARCHnumpy:
 		self.omega = self.theta[0] 
 		self.alpha = self.theta[1]
 		self.beta  = self.theta[2]
+
 	def __repr__(self):
+		'''
+		Function defining what to print when print(model) is called
+		on a instance of the model object.
+		'''
 		return "omega = %s\nalpha = %s\nbeta  = %s" % ( round(self.omega,8),
 														round(self.alpha,3),
 														round(self.beta,3) )
 
 	def log_likelihood(self,gamma=None,y=None,fmin=False):
+		'''
+		Takes the reparametrized 3X1 numpy array gamma = log((omega,alpha,beta))
+		as input (if given or else uses the ones in self namespace).
+		And returns either sum of all likelihood contributions that is a 1X1
+		numpy array or both the likelihood and the (T,) numpy array of estimated conditional variances.
+		'''
 		if(gamma != None):
 			self.theta = np.exp(gamma)
 			self.omega = self.theta[0] 
