@@ -1,3 +1,7 @@
+# Recurrent Neural Nets predicting Stock volatility
+
+![Jordan RNN](https://github.com/duffau/RNN_GARCH/recurrent_jordan_nn_volatility.png)
+
 This repository contains Python code to estimate a recurrent Neural Network which tries to model the volatility of the daily returns of the SP500 index.
 
 ## To run the code
