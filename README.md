@@ -2,7 +2,7 @@
 
 ![Jordan RNN](recurrent_jordan_nn_volatility.png)
 
-This repository contains Python code to estimate a recurrent Neural Network which tries to model the volatility of the daily returns of the SP500 index.
+This repository contains Python code to train a recurrent Neural Network which tries to model the volatility of the daily returns of the SP500 index.
 
 ## To run the code
 
@@ -13,8 +13,8 @@ Download a Python 3.x interpreter from [here](https://www.python.org/downloads/)
 When Python (and the appropriate packages) are dowloaded. Simply type one of the following commands in your command prompt:
 
 ```
-python estimate_GARCH.py
-python estimate_RNN.py 
+python train_GARCH.py
+python train_RNN.py 
 python VaR_GARCH.py
 python VaR_RNN.py
 ```
