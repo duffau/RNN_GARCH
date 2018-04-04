@@ -1,4 +1,4 @@
-# Recurrent Neural Nets predicting Stock volatility
+# Recurrent Neural Net predicting Stock volatility
 
 ![Jordan RNN](recurrent_jordan_nn_volatility.png)
 
