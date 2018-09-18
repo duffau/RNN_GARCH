@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy as np
 from RNNnumpy import RNN as rnn
+import utils
 import scipy.optimize as op
 import json
 import time
@@ -14,15 +15,8 @@ print('Dimension of loaded CSV file:',df.shape)
 
 # Choosing estimation and validation period
 # -----------------------------------------
-T = 4495
-t = 0
-#T = 100
-est_index = df.index[t:t+T]       # Date index for estimation
-val_index = df.index[t+T:(t+T+500)] # Date index for validation
-print('Estimation from ',min(est_index))
-print('Estimation to   ',max(est_index))
-print('Validation from ',min(val_index))
-print('Validation to   ',max(val_index))
+n_validation = 500
+df_train, df_val = utils.split_in_training_and_out_of_sample_validation(df, n_validation)
 
 # Calculating demeaned retuns and variance
 # ---------------------------------------- 
@@ -65,7 +59,7 @@ print('Initial log likelihood =',log_like)
 
 # Function for printing output during BFGS minimization
 def callbackF(Xi):
-    global Nfeval
+    global n_func_evals
     global log_like
     global w_list
     w_list.append(list(Xi))  
@@ -85,7 +79,7 @@ def callbackF(Xi):
 #for lam in lam_range:
 w_list = []
 log_like = pd.DataFrame()
-Nfeval = 0
+n_func_evals = 0
 
 # Printing header for minimization procedure
 print('{0:4s}  {1:9s}  {2:9s}'.format('Iter','EstData','ValData')) 
