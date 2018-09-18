@@ -1,7 +1,8 @@
 import numpy as np
 from scipy.stats import norm
 
-class GARCHnumpy:
+
+class GARCH:
 	'''
 	This class defines the GARCH model object which contains, functions
 	for estimation and VaR forecasting.
