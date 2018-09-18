@@ -37,28 +37,28 @@ class GARCHnumpy:
 		Takes the reparametrized 3X1 numpy array gamma = log((omega,alpha,beta))
 		as input (if given or else uses the ones in self namespace).
 		And returns either sum of all likelihood contributions that is a 1X1
-		numpy array or both the likelihood and the (T,) numpy array of estimated conditional variances.
+		numpy array or both the likelihood and the (t_max,) numpy array of estimated conditional variances.
 		'''
 		self.theta = np.exp(gamma)
 		self.omega = self.theta[0]
 		self.alpha = self.theta[1]
 		self.beta  = self.theta[2]
 
-		T = len(y)
-		log_like = 1/2 * T * np.log(2*np.pi)
-		sigma2    = np.zeros(T+1)
+		t_max = len(y)
+		avg_log_like = 0
+		sigma2 = np.zeros(t_max+1)
 		sigma2[0] = np.var(y)
-		for t in range(1,T):
+		for t in range(1, t_max):
 			sigma2[t] =  self.omega + self.alpha*y[t-1]**2 + self.beta*sigma2[t-1]
-			log_like += 1/2 * ( np.log(sigma2[t]) + (y[t]**2)/sigma2[t] )
-		if(fmin):
-			return log_like
+			avg_log_like += (1/2 * (np.log(sigma2[t]) + (y[t]**2)/sigma2[t]))/t_max
+		if fmin:
+			return avg_log_like
 		else:
-			return [log_like,sigma2[0:T]] 
+			return [avg_log_like, sigma2[0:t_max]]
 
-	def VaR(self,y,pct=[0.01,0.025,0.05]):
-		est_variance = self.log_likelihood(y=y,fmin=False)[1]
+	def VaR(self, y, pct=(0.01, 0.025, 0.05)):
+		est_variance = self.log_likelihood(y=y, fmin=False)[1]
 		VaR = {}
 		for alpha in pct:
-			VaR[str(alpha)] = self.mu + norm.ppf(alpha)*np.sqrt(est_variance)
+			VaR[str(alpha)] = self.mu + norm.ppf(alpha) * np.sqrt(est_variance)
 		return VaR
