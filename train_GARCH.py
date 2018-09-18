@@ -81,16 +81,3 @@ est_dct = {'timestamp':str(time.strftime("%a %d %m %Y %H:%M", time.gmtime())),
 file_name = 'GARCH_est_' + time.strftime("%a_%d-%m-%Y_%H.%M", time.gmtime())+'.json'
 json.dump(est_dct,open(file_name,'w'))
 
-# Plotting absolut returns and estimated sigma_t
-# ----------------------------------------------- 
-# Evaluating model after minimization of loss function and saving in DataFrame for plotting
-est_data['sigma2_est'] = model.log_likelihood(y=est_data['return_dm'])
-
-import matplotlib.pyplot as plt
-plt.subplot(211)
-est_data['return'].plot()
-
-plt.subplot(212)
-np.sqrt(est_data['return']**2).plot()
-np.sqrt(est_data['sigma2_opt']).plot()
-plt.show()
