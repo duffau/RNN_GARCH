@@ -1,7 +1,7 @@
 # Calculate VaR and Kupiec statistics
 import pandas as pd
 import numpy as np
-from GARCHnumpy import GARCHnumpy as garch
+from GARCHnumpy import GARCH as garch
 import json
 from pprint import pprint
 import scipy.stats as sps

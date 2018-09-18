@@ -7,7 +7,7 @@ class GARCHnumpy:
 	for estimation and VaR forecasting.
 	'''
 
-	def __init__(self,theta=None, mu=None):
+	def __init__(self, theta=None, mu=None):
 
 		# Initialize parameters
 		if(theta != None):
@@ -21,7 +21,7 @@ class GARCHnumpy:
 
 		self.omega = self.theta[0] 
 		self.alpha = self.theta[1]
-		self.beta  = self.theta[2]
+		self.beta = self.theta[2]
 
 	def __repr__(self):
 		'''
@@ -32,18 +32,17 @@ class GARCHnumpy:
 														round(self.alpha,3),
 														round(self.beta,3) )
 
-	def log_likelihood(self,gamma=None,y=None,fmin=False):
+	def log_likelihood(self, gamma, y, fmin=False):
 		'''
 		Takes the reparametrized 3X1 numpy array gamma = log((omega,alpha,beta))
 		as input (if given or else uses the ones in self namespace).
 		And returns either sum of all likelihood contributions that is a 1X1
 		numpy array or both the likelihood and the (T,) numpy array of estimated conditional variances.
 		'''
-		if(gamma != None):
-			self.theta = np.exp(gamma)
-			self.omega = self.theta[0] 
-			self.alpha = self.theta[1]
-			self.beta  = self.theta[2]
+		self.theta = np.exp(gamma)
+		self.omega = self.theta[0]
+		self.alpha = self.theta[1]
+		self.beta  = self.theta[2]
 
 		T = len(y)
 		log_like = 1/2 * T * np.log(2*np.pi)
@@ -63,6 +62,3 @@ class GARCHnumpy:
 		for alpha in pct:
 			VaR[str(alpha)] = self.mu + norm.ppf(alpha)*np.sqrt(est_variance)
 		return VaR
-
-
-

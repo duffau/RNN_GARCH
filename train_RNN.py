@@ -1,6 +1,6 @@
 import pandas as pd
 import numpy as np
-from RNNnumpy import RNNnumpy as rnn
+from RNNnumpy import RNN as rnn
 import scipy.optimize as op
 import json
 import time

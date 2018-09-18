@@ -1,7 +1,8 @@
 import pandas as pd
 import numpy as np
-import scipy.optimize as op
-from GARCHnumpy import GARCHnumpy as garch
+import scipy.optimize as opt
+from GARCH import GARCH
+import utils
 import time
 import json
 

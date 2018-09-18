@@ -1,7 +1,7 @@
 # Calculate VaR and Kupiec statistics
 import pandas as pd
 import numpy as np
-from RNNnumpy import RNNnumpy as rnn
+from RNNnumpy import RNN as rnn
 import json
 from pprint import pprint
 import scipy.stats as sps
