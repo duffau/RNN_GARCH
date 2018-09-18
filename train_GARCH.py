@@ -15,9 +15,8 @@ print('Dimension od loaded CSV file:',df.shape)
 
 # Choosing estimation period
 # --------------------------
-est_index = df.index[0:4495]
-print('From ',min(est_index))
-print('To   ',max(est_index))
+n_validation = 500
+df_train, df_val = utils.split_in_training_and_out_of_sample_validation(df, n_validation=n_validation)
 
 # Calculating demeaned retuns and variance
 # ---------------------------------------- 
