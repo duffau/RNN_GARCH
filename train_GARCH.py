@@ -3,37 +3,38 @@ import numpy as np
 import scipy.optimize as opt
 from GARCH import GARCH
 import utils
-import time
-import json
+
+ALPHA_INIT = 0.088
+BETA_INIT = 0.86
 
 # Data load and manipulation
 # --------------------------
-df = pd.read_csv('./data/sp500.csv',index_col='Date',parse_dates=True).sort_index() # Load data from CSV
-df['return'] = np.log(df['Close']).diff()*100 # Calculate returns
-df = df.dropna() # Remove missings
-print('Dimension od loaded CSV file:',df.shape)
+df = pd.read_csv('./data/sp500.csv', index_col='Date', parse_dates=True).sort_index()  # Load data from CSV
+df['return'] = np.log(df['Close']).diff() * 100  # Calculate returns
+df = df.dropna()  # Remove missings
+print('Dimension od loaded CSV file:', df.shape)
 
 # Choosing estimation period
 # --------------------------
 n_validation = 500
 df_train, df_val = utils.split_in_training_and_out_of_sample_validation(df, n_validation=n_validation)
 
-# Calculating demeaned retuns and variance
-# ---------------------------------------- 
-est_data = pd.DataFrame()
-est_data['return']  = df.loc[est_index,'return']
-mu       = np.mean(est_data['return'])  
-est_data['return_dm']  = est_data['return'] - mu
-variance = np.var(est_data['return'])
-print('average  = ', mu)
-print('variance = ', variance)
-print('omega    = ', variance*(1-0.088-0.86))
+# Calculating demeaned returns and variance
+# -----------------------------------------
+mean_train = df_train['return'].mean()
+df_train['return_dm'] = df_train['return'] - mean_train
+df_val['return_dm'] = df_val['return'] - mean_train
 
-model = garch()
-theta0 = np.array([variance*(1-0.088-0.86),0.088,0.86])
+variance = np.var(df_train['return'])
+omega_init = variance*(1 - ALPHA_INIT - BETA_INIT)
+print('average  = {:.3g}\nvariance = {:.3g}\nomega = {:.3g}'.format(mean_train, variance, omega_init))
+
+model = GARCH()
+theta0 = np.array([omega_init, ALPHA_INIT, BETA_INIT])
 gamma0 = np.log(theta0)
-log_like, est_data['sigma2_non-opt'] = model.log_likelihood(gamma=gamma0,y=est_data['return_dm'],fmin=False)
-print('Initial log likelihood =',log_like)
+log_like, df_train['sigma2_non-opt'] = model.log_likelihood(gamma=gamma0, y=df_train['return_dm'], fmin=False)
+print('Initial log likelihood =', log_like)
+
 
 # Minimize loss function
 # ----------------------
