@@ -38,35 +38,18 @@ print('Initial log likelihood =', log_like)
 
 # Minimize loss function
 # ----------------------
-# Function for printing output during BFGS minimization
-def callbackF(Xi):
-    global Nfeval
-    global log_like
-    global w_list
-    w_list.append(Xi)  
-    loglike_est = model.log_likelihood(Xi,est_data['return_dm_abs']) # Evaluating log like on estimation data (for printing only)
-    loglike_val = model.log_likelihood(Xi,val_data['return_dm_abs']) # Evaluating log like on valisation data (for printing only)
-    log_like.loc[Nfeval,'EstData'] = loglike_est # Saving estimation data log like value for future plotting
-    log_like.loc[Nfeval,'ValData'] = loglike_val # Saving validation data log like value for future plotting
-    if (Nfeval % 1) == 0:
-    	# Printing number of evaluations and log like values 
-    	print('{0:4d} {1: 3.6f} {2: 3.6f}'.format(Nfeval, loglike_est,loglike_val))
-    	#print('{0:4d}'.format(Nfeval))
-    Nfeval += 1
+callback_func = utils.CallbackFunc(df_train, df_val, 'return_dm', model, )
+res = opt.minimize(model.log_likelihood,
+                   x0=gamma0,
+                   args=(df_train['return_dm'], True),  # arguments for function to be minimized (y, fmin=True)
+                   method='BFGS',
+                   callback=callback_func,
+                   options={'maxiter': 50})
 
-# Printing header for minimization procedure
-print('{0:4s}  {1:9s}  {2:9s}'.format('Iter','EstData','ValData')) 
-res = op.minimize(	model.log_likelihood,					# pointer to function to minimize
-						x0=gamma0,							# numpy array of intial reparametrized parameters
-						args=(est_data['return_dm'],True), 	# arguments for function (y, fmin=True)
-						method='BFGS',						# minimization method
-						callback=callbackF,					# Function evaluated during each iteration, here used for printing
-						options={'maxiter':50})				# Maximum number of BFGS iterations
+print('Results of BFGS minimizartion\n', res)
+print('theta0    =', theta0)
+print('theta_opt =', np.exp(res.x))
 
-													
-print('Results of BFGS minimizartion\n',res)
-print('theta0    =',theta0)
-print('theta_opt =',np.exp(res.x))
 
 # Saving results to JSON text-file
 # --------------------------------
